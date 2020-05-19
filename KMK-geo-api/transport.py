@@ -1,17 +1,17 @@
 from google.transit import gtfs_realtime_pb2
 from ftplib import FTP
-from VehiclePosition import VehiclePosition
+from VehiclePosition import VehiclePosition, JSONserializer
 import paho.mqtt.client as paho
-import time
+import time, sys
 
 def get_data(ftp):
     data = []
-    ftp.retrbinary('RETR VehiclePositions_T.pb',data.append)
+    ftp.retrbinary('RETR VehiclePositions_A.pb',data.append)
     return b''.join(data)
 
 def CreateMQTTclient():
     client = paho.Client()
-    client.connect('broker.mqttdashboard.com', 1883)
+    client.connect('mqtt.eclipse.org', 1883)
     client.loop_start()
     return client
 
@@ -27,9 +27,10 @@ def main():
 
         while(True):
             feed.ParseFromString(get_data(ftp))
-            positions = [VehiclePosition(entity,'Tram') for entity in feed.entity]
-            print(positions.toJSON())
-            MQTTclient.publish('swswwsws/1235', str(temperature), qos=1)
+            positions = JSONserializer.encode([VehiclePosition(entity,'T') for entity in feed.entity])
+            # positions = "ala ma kota"
+            print(sys.getsizeof(positions))
+            MQTTclient.publish('kmk_geo_api/positions', positions, qos=1)
             time.sleep(5)
     except KeyboardInterrupt:
         print('\nExiting...')
