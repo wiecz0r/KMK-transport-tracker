@@ -1,0 +1,20 @@
+﻿.my-div-icon-tram {
+    background: orange;
+    border: 2px solid darkorange;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 20px;
+}
+
+.my-div-icon-bus {
+    background: blue;
+    border: 2px solid darkblue;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 20px;
+    color: white;
+}
